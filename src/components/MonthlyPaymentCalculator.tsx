@@ -7,6 +7,8 @@ interface MonthlyPaymentCalculatorProps {
   purchasePrice: number;
   downPayment: number;
   interestRate?: number;
+  initialPropertyTaxRate?: number;
+  initialUtilities?: number;
   onPaymentChange: (payment: MonthlyPayment) => void;
 }
 
@@ -21,10 +23,15 @@ export function MonthlyPaymentCalculator({
   purchasePrice,
   downPayment,
   interestRate = 7.0,
+  initialPropertyTaxRate,
+  initialUtilities,
   onPaymentChange,
 }: MonthlyPaymentCalculatorProps) {
   const loanAmount = purchasePrice - downPayment;
   const downPaymentPercent = (downPayment / purchasePrice) * 100;
+  
+  // Use provided tax rate or default based on national average
+  const effectiveTaxRate = initialPropertyTaxRate ?? 0.012;
 
   // Calculate default P&I based on loan amount and interest rate
   const calculatePandI = () => {
@@ -40,10 +47,10 @@ export function MonthlyPaymentCalculator({
   const defaultPayments: PaymentLineItem[] = [
     { key: 'principalAndInterest', label: 'Principal & Interest', defaultValue: calculatePandI(), isEditable: true },
     { key: 'mortgageInsurance', label: 'PMI', defaultValue: downPaymentPercent < 20 ? loanAmount * 0.005 / 12 : 0, isEditable: true },
-    { key: 'propertyTaxes', label: 'Property Taxes', defaultValue: purchasePrice * 0.012 / 12, isEditable: true },
+    { key: 'propertyTaxes', label: 'Property Taxes', defaultValue: purchasePrice * effectiveTaxRate / 12, isEditable: true },
     { key: 'homeownersInsurance', label: 'Homeowners Insurance', defaultValue: purchasePrice * 0.003 / 12, isEditable: true },
     { key: 'hoaFees', label: 'HOA Fees', defaultValue: 0, isEditable: true },
-    { key: 'utilities', label: 'Utilities', defaultValue: 200, isEditable: true },
+    { key: 'utilities', label: 'Utilities', defaultValue: initialUtilities ?? 200, isEditable: true },
   ];
 
   const [payments, setPayments] = useState<Record<string, number>>(() => {
