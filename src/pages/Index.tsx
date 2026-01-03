@@ -151,6 +151,8 @@ const Index = () => {
                   <MonthlyPaymentCalculator
                     purchasePrice={propertyInput!.purchasePrice}
                     downPayment={propertyInput!.downPaymentAmount}
+                    initialPropertyTaxRate={analysis.listingData?.propertyTaxRate}
+                    initialUtilities={analysis.listingData?.estimatedUtilities}
                     onPaymentChange={handlePaymentChange}
                   />
                 </div>

@@ -27,6 +27,8 @@ export interface ListingData {
   squareFootage: number;
   hoaFees: number;
   propertyTaxEstimate: number;
+  propertyTaxRate: number;
+  estimatedUtilities: number;
   greatSchoolsRating: number | null;
   yearBuilt: number | null;
   lotSize: string | null;

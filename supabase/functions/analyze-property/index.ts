@@ -138,12 +138,14 @@ You must respond with valid JSON only, no markdown or code blocks.`
                       propertyType: { type: "string" },
                       squareFootage: { type: "number" },
                       hoaFees: { type: "number" },
-                      propertyTaxEstimate: { type: "number" },
+                      propertyTaxEstimate: { type: "number", description: "Annual property tax estimate based on home value, property type, and local tax rate" },
+                      propertyTaxRate: { type: "number", description: "Estimated local property tax rate as decimal (e.g., 0.012 for 1.2%)" },
+                      estimatedUtilities: { type: "number", description: "Estimated monthly utilities cost based on square footage and property type" },
                       greatSchoolsRating: { type: "number", nullable: true },
                       yearBuilt: { type: "number", nullable: true },
                       lotSize: { type: "string", nullable: true }
                     },
-                    required: ["address", "listingPrice", "propertyType", "squareFootage", "hoaFees", "propertyTaxEstimate"]
+                    required: ["address", "listingPrice", "propertyType", "squareFootage", "hoaFees", "propertyTaxEstimate", "propertyTaxRate", "estimatedUtilities"]
                   },
                   safetyData: {
                     type: "object",
@@ -273,8 +275,10 @@ Key Metrics:
 
 Based on typical data for ${input.state}, provide a comprehensive investment analysis. Generate realistic estimates for:
 1. Property details (square footage, year built, etc. based on the property type and price point)
-2. Safety data (typical crime statistics for the area)
-3. Demographics data (income levels, homeownership rates, etc.)
+2. Property tax estimate: Calculate based on home value, property type, and the actual local/state property tax rate for ${input.state}. Include the tax rate used.
+3. Utilities estimate: Estimate monthly utilities (electric, gas, water, sewer, trash) based on square footage, property type, and typical rates in ${input.state}
+4. Safety data (typical crime statistics for the area)
+5. Demographics data (income levels, homeownership rates, etc.)
 
 Score each of the 5 categories and calculate the overall investment score.`;
 }
