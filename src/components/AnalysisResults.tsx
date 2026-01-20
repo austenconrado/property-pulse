@@ -81,7 +81,7 @@ export function AnalysisResults({ analysis }: AnalysisResultsProps) {
                 <h3 className="font-semibold text-foreground">Neighborhood Safety</h3>
               </div>
               <a
-                href="https://spotcrime.com"
+                href="https://spotcrime.com/map"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
@@ -128,11 +128,22 @@ export function AnalysisResults({ analysis }: AnalysisResultsProps) {
 
         {analysis.demographicsData && (
           <div className="bg-card border border-border rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Users className="w-5 h-5 text-primary" />
-              <h3 className="font-semibold text-foreground">Demographics</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Demographics</h3>
+              </div>
+              <a
+                href="https://censusreporter.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+              >
+                Census Reporter
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Median Income</span>
                 <span className="font-medium text-foreground">
@@ -140,15 +151,27 @@ export function AnalysisResults({ analysis }: AnalysisResultsProps) {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Homeownership</span>
+                <span className="text-muted-foreground">Median Home Value</span>
+                <span className="font-medium text-foreground">
+                  {formatCurrency(analysis.demographicsData.medianHomeValue)}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Homeownership Rate</span>
                 <span className="font-medium text-foreground">
                   {(analysis.demographicsData.homeownershipRatio * 100).toFixed(0)}%
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Median Home Value</span>
+                <span className="text-muted-foreground">Employment Rate</span>
                 <span className="font-medium text-foreground">
-                  {formatCurrency(analysis.demographicsData.medianHomeValue)}
+                  {(analysis.demographicsData.employmentRate * 100).toFixed(1)}%
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Population Density</span>
+                <span className="font-medium text-foreground">
+                  {analysis.demographicsData.populationDensity.toLocaleString()} / sq mi
                 </span>
               </div>
             </div>
