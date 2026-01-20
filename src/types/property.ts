@@ -34,11 +34,18 @@ export interface ListingData {
   lotSize: string | null;
 }
 
+export interface RecentCrime {
+  type: string;
+  date: string;
+  distance: string;
+}
+
 export interface SafetyData {
   incidentCount: number;
   crimeTypes: string[];
   recency: string;
   classification: 'Safe' | 'Moderately Safe' | 'High Risk';
+  recentCrimes: RecentCrime[];
 }
 
 export interface DemographicsData {

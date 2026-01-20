@@ -1,4 +1,4 @@
-import { CheckCircle2, AlertTriangle, Info, Building2, Shield, Users } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Info, Building2, Shield, Users, ExternalLink, MapPin } from 'lucide-react';
 import { InvestmentScoreChart } from './InvestmentScoreChart';
 import { ScoreBreakdown } from './ScoreBreakdown';
 import type { InvestmentAnalysis } from '@/types/property';
@@ -75,9 +75,20 @@ export function AnalysisResults({ analysis }: AnalysisResultsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {analysis.safetyData && (
           <div className="bg-card border border-border rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Shield className="w-5 h-5 text-primary" />
-              <h3 className="font-semibold text-foreground">Neighborhood Safety</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Shield className="w-5 h-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Neighborhood Safety</h3>
+              </div>
+              <a
+                href="https://spotcrime.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+              >
+                View on SpotCrime
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium mb-3 ${
               analysis.safetyData.classification === 'Safe' 
@@ -88,9 +99,30 @@ export function AnalysisResults({ analysis }: AnalysisResultsProps) {
             }`}>
               {analysis.safetyData.classification}
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground mb-4">
               {analysis.safetyData.incidentCount} incidents reported in the last {analysis.safetyData.recency}
             </p>
+
+            {/* Recent Crimes */}
+            {analysis.safetyData.recentCrimes && analysis.safetyData.recentCrimes.length > 0 && (
+              <div className="border-t border-border pt-4">
+                <h4 className="text-sm font-medium text-foreground mb-3">Recent Incidents</h4>
+                <div className="space-y-2">
+                  {analysis.safetyData.recentCrimes.slice(0, 3).map((crime, index) => (
+                    <div key={index} className="flex items-start justify-between text-sm bg-muted/30 rounded-lg p-3">
+                      <div className="flex-1">
+                        <span className="font-medium text-foreground">{crime.type}</span>
+                        <p className="text-xs text-muted-foreground">{crime.date}</p>
+                      </div>
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <MapPin className="w-3 h-3" />
+                        <span className="text-xs">{crime.distance}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
