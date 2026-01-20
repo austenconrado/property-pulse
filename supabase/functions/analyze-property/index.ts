@@ -153,9 +153,22 @@ You must respond with valid JSON only, no markdown or code blocks.`
                       incidentCount: { type: "number" },
                       crimeTypes: { type: "array", items: { type: "string" } },
                       recency: { type: "string" },
-                      classification: { type: "string", enum: ["Safe", "Moderately Safe", "High Risk"] }
+                      classification: { type: "string", enum: ["Safe", "Moderately Safe", "High Risk"] },
+                      recentCrimes: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            type: { type: "string", description: "Type of crime (e.g., Theft, Vandalism, Assault)" },
+                            date: { type: "string", description: "Date of the incident (e.g., Jan 15, 2026)" },
+                            distance: { type: "string", description: "Distance from property (e.g., 0.3 miles)" }
+                          },
+                          required: ["type", "date", "distance"]
+                        },
+                        description: "The 3 most recent crimes near the property with their distances"
+                      }
                     },
-                    required: ["incidentCount", "crimeTypes", "recency", "classification"]
+                    required: ["incidentCount", "crimeTypes", "recency", "classification", "recentCrimes"]
                   },
                   demographicsData: {
                     type: "object",
@@ -277,7 +290,7 @@ Based on typical data for ${input.state}, provide a comprehensive investment ana
 1. Property details (square footage, year built, etc. based on the property type and price point)
 2. Property tax estimate: Calculate based on home value, property type, and the actual local/state property tax rate for ${input.state}. Include the tax rate used.
 3. Utilities estimate: Estimate monthly utilities (electric, gas, water, sewer, trash) based on square footage, property type, and typical rates in ${input.state}
-4. Safety data (typical crime statistics for the area)
+4. Safety data: Include typical crime statistics for the area AND generate 3 recent crime examples with realistic types, dates (within the last 30-90 days), and distances from the property (between 0.1 and 1.5 miles)
 5. Demographics data (income levels, homeownership rates, etc.)
 
 Score each of the 5 categories and calculate the overall investment score.`;
